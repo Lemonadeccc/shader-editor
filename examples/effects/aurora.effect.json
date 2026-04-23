@@ -1,0 +1,93 @@
+{
+  "id": "generative.aurora",
+  "version": "1.0.0",
+  "title": "Aurora",
+  "category": "generative",
+  "family": "flow-noise",
+  "summary": "Layered animated noise ribbons with color ramp control.",
+  "tags": ["procedural", "gradient", "motion", "hero"],
+  "inputs": ["uv", "time", "mouse"],
+  "outputs": ["color"],
+  "parameters": [
+    {
+      "id": "intensity",
+      "type": "float",
+      "label": "Intensity",
+      "default": 0.85,
+      "min": 0,
+      "max": 2,
+      "step": 0.01,
+      "aiHint": "Raise for stronger aurora bands; lower for subtle ambience."
+    },
+    {
+      "id": "scale",
+      "type": "float",
+      "label": "Band Scale",
+      "default": 4.5,
+      "min": 0.5,
+      "max": 20,
+      "step": 0.1,
+      "aiHint": "Controls the size and spacing of color bands."
+    },
+    {
+      "id": "speed",
+      "type": "float",
+      "label": "Speed",
+      "default": 0.42,
+      "min": 0,
+      "max": 3,
+      "step": 0.01
+    },
+    {
+      "id": "colorA",
+      "type": "color",
+      "label": "Color A",
+      "default": "#41d6b2",
+      "aiHint": "Primary glow color."
+    },
+    {
+      "id": "colorB",
+      "type": "color",
+      "label": "Color B",
+      "default": "#7b5cff",
+      "aiHint": "Secondary band color."
+    }
+  ],
+  "backends": {
+    "tsl": {
+      "module": "effects/generative/aurora.tsl.ts",
+      "entry": "createAuroraNode",
+      "capabilities": ["webgl2", "webgpu"]
+    },
+    "glsl": {
+      "module": "effects/generative/aurora.glsl",
+      "entry": "aurora",
+      "capabilities": ["webgl2"]
+    },
+    "wgsl": {
+      "module": "effects/generative/aurora.wgsl",
+      "entry": "aurora",
+      "capabilities": ["webgpu"]
+    }
+  },
+  "performance": {
+    "cost": "medium",
+    "passes": 1,
+    "supportsDownsample": true,
+    "requiresCompute": false,
+    "requiresFeedback": false
+  },
+  "ai": {
+    "description": "Use Aurora for flowing colorful ribbons, nebula backgrounds, and soft interactive hero visuals.",
+    "goodFor": ["background motion", "soft glow", "gradient atmosphere"],
+    "avoidWhen": ["hard geometric layout", "text legibility is poor"],
+    "promptAliases": ["northern lights", "flowing gradient", "soft nebula"]
+  },
+  "tests": [
+    {
+      "name": "default-aurora-1280x720",
+      "fixture": "fixtures/aurora-default.project.json",
+      "maxPixelDelta": 0.04
+    }
+  ]
+}

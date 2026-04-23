@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shader-stack.local/schemas/effect-manifest.schema.json",
+  "title": "EffectManifest",
+  "type": "object",
+  "required": ["id", "version", "title", "category", "family", "parameters", "backends"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9.-]*$"
+    },
+    "version": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "enum": ["feature", "generative", "distort", "post", "blur", "misc", "custom"]
+    },
+    "family": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "inputs": {
+      "type": "array",
+      "items": { "enum": ["color", "uv", "depth", "normal", "motion", "mouse", "time", "audio", "texture"] },
+      "default": ["color", "uv", "time"]
+    },
+    "outputs": {
+      "type": "array",
+      "items": { "enum": ["color", "uv", "depth", "normal", "mask", "texture"] },
+      "default": ["color"]
+    },
+    "parameters": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/parameter" }
+    },
+    "backends": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tsl": { "$ref": "#/$defs/backendModule" },
+        "glsl": { "$ref": "#/$defs/backendModule" },
+        "wgsl": { "$ref": "#/$defs/backendModule" }
+      }
+    },
+    "performance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cost": { "enum": ["low", "medium", "high", "extreme"] },
+        "passes": { "type": "integer", "minimum": 1 },
+        "supportsDownsample": { "type": "boolean" },
+        "requiresCompute": { "type": "boolean" },
+        "requiresFeedback": { "type": "boolean" }
+      }
+    },
+    "ai": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "goodFor": { "type": "array", "items": { "type": "string" } },
+        "avoidWhen": { "type": "array", "items": { "type": "string" } },
+        "promptAliases": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "fixture"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "fixture": { "type": "string" },
+          "maxPixelDelta": { "type": "number", "minimum": 0 }
+        }
+      },
+      "default": []
+    }
+  },
+  "$defs": {
+    "backendModule": {
+      "type": "object",
+      "required": ["module", "entry"],
+      "additionalProperties": false,
+      "properties": {
+        "module": { "type": "string" },
+        "entry": { "type": "string" },
+        "minBackendVersion": { "type": "string" },
+        "capabilities": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        }
+      }
+    },
+    "parameter": {
+      "type": "object",
+      "required": ["id", "type", "label", "default"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9]*$"
+        },
+        "type": {
+          "enum": ["float", "int", "boolean", "color", "vec2", "vec3", "enum", "texture", "curve"]
+        },
+        "label": { "type": "string" },
+        "default": {},
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "step": { "type": "number" },
+        "unit": { "type": "string" },
+        "options": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "bindable": {
+          "type": "boolean",
+          "default": true
+        },
+        "aiHint": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

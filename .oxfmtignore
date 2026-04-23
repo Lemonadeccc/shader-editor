@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+.omx
+.codex
+src
+index.html
+styles.css
+apps/*/dist
+packages/*/dist

@@ -1,0 +1,22 @@
+{
+  "name": "@unicorn/renderer-webgl2",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check": "tsc -b",
+    "build": "tsc -b",
+    "test": "vp test run src --passWithNoTests"
+  },
+  "dependencies": {
+    "@unicorn/renderer-core": "workspace:*",
+    "@unicorn/schemas": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

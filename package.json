@@ -1,0 +1,34 @@
+{
+  "name": "unicorn-shader-editor",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "ready": "vp fmt apps packages vite.config.ts README.md package.json pnpm-workspace.yaml --ignore-path .oxfmtignore --check && vp lint apps packages vite.config.ts && vp run -r test && vp run -r build",
+    "dev": "vp run editor#dev",
+    "build": "vp run -r build",
+    "test": "vp run -r test",
+    "test:visual": "vp run editor#test:visual",
+    "check": "vp run -r check",
+    "lint": "vp lint apps packages vite.config.ts",
+    "fmt": "vp fmt apps packages vite.config.ts README.md package.json pnpm-workspace.yaml --ignore-path .oxfmtignore"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.1.3",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "catalog:",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^6.0.2",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "pnpm@10.33.1"
+}

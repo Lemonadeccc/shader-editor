@@ -1,0 +1,16 @@
+.omx/
+node_modules/
+dist/
+dist-ssr/
+*.local
+*.log
+.codex/*
+!.codex/agents/
+!.codex/agents/**
+!.codex/skills/
+!.codex/skills/**
+.codex/skills/.system/**
+!.codex/prompts/
+!.codex/prompts/**
+
+*/editor/tests/

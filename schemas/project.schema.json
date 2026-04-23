@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shader-stack.local/schemas/project.schema.json",
+  "title": "ShaderStackProject",
+  "type": "object",
+  "required": ["schemaVersion", "project", "scene"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "type": "string"
+    },
+    "project": {
+      "type": "object",
+      "required": ["id", "name", "createdAt", "updatedAt"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "description": { "type": "string" }
+      }
+    },
+    "scene": {
+      "type": "object",
+      "required": ["canvas", "layers"],
+      "additionalProperties": false,
+      "properties": {
+        "canvas": {
+          "type": "object",
+          "required": ["width", "height", "pixelRatio"],
+          "additionalProperties": false,
+          "properties": {
+            "width": { "type": "integer", "minimum": 1 },
+            "height": { "type": "integer", "minimum": 1 },
+            "pixelRatio": { "type": "number", "minimum": 0.25, "maximum": 4 },
+            "background": { "type": "string" }
+          }
+        },
+        "assets": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/asset" },
+          "default": []
+        },
+        "layers": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/layer" }
+        },
+        "timeline": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "interactions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/interaction" },
+          "default": []
+        }
+      }
+    },
+    "ai": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "intent": { "type": "string" },
+        "styleTags": { "type": "array", "items": { "type": "string" } },
+        "lastPlan": { "type": "string" }
+      }
+    }
+  },
+  "$defs": {
+    "asset": {
+      "type": "object",
+      "required": ["id", "kind", "uri", "hash"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "kind": { "enum": ["image", "video", "gltf", "glb", "svg", "lut", "texture"] },
+        "uri": { "type": "string" },
+        "hash": { "type": "string" },
+        "width": { "type": "integer" },
+        "height": { "type": "integer" },
+        "metadata": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "layer": {
+      "type": "object",
+      "required": ["id", "kind", "name", "visible", "effects"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "kind": { "enum": ["group", "shape", "text", "image", "video", "model", "sdf2d", "sdf3d", "effect"] },
+        "name": { "type": "string" },
+        "visible": { "type": "boolean" },
+        "blendMode": { "type": "string", "default": "normal" },
+        "transform": { "type": "object", "additionalProperties": true },
+        "source": { "type": "object", "additionalProperties": true },
+        "effects": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/effectInstance" }
+        },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/layer" }
+        }
+      }
+    },
+    "effectInstance": {
+      "type": "object",
+      "required": ["id", "effectId", "enabled", "parameters"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "effectId": { "type": "string" },
+        "enabled": { "type": "boolean" },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/parameterValue" }
+        }
+      }
+    },
+    "parameterValue": {
+      "oneOf": [
+        { "type": "number" },
+        { "type": "integer" },
+        { "type": "boolean" },
+        { "type": "string" },
+        {
+          "type": "object",
+          "required": ["binding"],
+          "additionalProperties": false,
+          "properties": {
+            "binding": { "enum": ["mouseX", "mouseY", "scroll", "time", "audio", "expression", "keyframes"] },
+            "expression": { "type": "string" },
+            "scale": { "type": "number" },
+            "offset": { "type": "number" }
+          }
+        }
+      ]
+    },
+    "interaction": {
+      "type": "object",
+      "required": ["id", "trigger", "operation"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "trigger": { "enum": ["appear", "hover", "scroll", "mouseMove", "click", "timeline"] },
+        "targetLayerId": { "type": "string" },
+        "operation": { "type": "object", "additionalProperties": true }
+      }
+    }
+  }
+}
